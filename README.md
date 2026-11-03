@@ -186,3 +186,6 @@ total 4
 drwx------ 2 xoalsrla226230 xoalsrla226230 4096 Nov  3 14:05 권한연습-하위
 -rw-r--r-- 1 xoalsrla226230 xoalsrla226230    0 Nov  3 14:05 권한연습.txt
 ```
+
+### Docker
+1. 
