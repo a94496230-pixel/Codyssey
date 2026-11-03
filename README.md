@@ -11,7 +11,7 @@
 | 항목 | 내용 |
 |------|------|
 | OS | Windows 11 |
-| 쉘/터미널 | Git Bash (VS Code 내장) |
+| 쉘/터미널 | WSL/Linux, Git Bash (VS Code 내장) |
 | Git 버전 | 2.56.0.windows.4 |
 | Docker 버전 | 추후 추가 예정 |
 
@@ -27,20 +27,46 @@
 - [x] 파일 복사 (cp)
 - [x] 파일 이동/이름변경 (mv)
 - [x] 파일 삭제 (rm)
+- [ ] 파일 내용 확인 (cat)
 
 ### 파일 권한
 - [x] 권한 확인 (ls -l)
 - [x] 권한 변경 (chmod)
 
-### Docker
-- [ ] Docker 설치 확인
-- [ ] 컨테이너 실행
-- [ ] 포트 설정
-- [ ] 볼륨 마운트
+### Docker 설치 및 기본점검
+- [ ] Docker 버전 확인 (docker --version)
+- [ ] Docker 데몬 동작 확인 (docker info)
 
-### Dockerfile
+### Docker 기본 운영 명령 수행
+- [ ] hello-world 컨테이너 실행 (docker run hello-world)
+- [ ] 이미지 목록 확인 (docker images)
+- [ ] 실행 중 컨테이너 확인 (docker ps)
+- [ ] 전체 컨테이너 확인 (docker ps -a)
+- [ ] 컨테이너 로그 확인 (docker logs)
+- [ ] 컨테이너 리소스 확인 (docker stats)
+- [ ] 컨테이너 중지 (docker stop)
+- [ ] 컨테이너 삭제 (docker rm)
+
+### Ubuntu 컨테이너 실습
+- [ ] Ubuntu 컨테이너 실행 (docker run -it ubuntu bash)
+- [ ] 컨테이너 내부에서 간단 명령 수행 (ls, echo, exit)
+- [ ] 백그라운드 컨테이너 실행 (docker run -dit)
+- [ ] 실행 중 컨테이너에 접속 (docker exec -it)
+- [ ] "attach"와 "exec" 차이 간단 정리
+
+### Dockerfile / 커스텀 이미지
 - [ ] Dockerfile 작성
-- [ ] 이미지 빌드
+- [ ] 커스텀 이미지 빌드
+- [ ] 컨테이너 실행 성공
+
+### 포트 매핑
+- [ ] 포트 매핑 실행 (-p host:container)
+- [ ] 브라우저 접속 화면(주소창 포함) 첨부
+
+### 바인드 마운트 / 볼륨
+- [ ] 바인드 마운트 실행 + 호스트 변경 전/후 비교
+- [ ] 볼륨 생성/연결/검증
+- [ ] 컨테이너 삭제 전/후 데이터 유지 확인
 
 ### Git / GitHub
 - [x] Git 설치 확인
@@ -48,11 +74,16 @@
 - [x] 레포지토리 클론
 - [x] add / commit / push
 - [ ] branch 생성 및 관리
+- [ ] git config --list 결과 기록
+- [ ] VSCode ↔ GitHub 연동 증거
 
 ---
 
 ## 🔍 검증 방법 및 결과
+
 ### 터미널 조작
+> 🖥️ 수행 환경: Git Bash (Windows, VS Code 내장)
+
 1. 현재 위치 확인 (pwd)
 ```bash
 $ pwd
@@ -130,6 +161,10 @@ $ ls -a
 ```
 
 ### 파일 권한
+> 🐧 수행 환경: WSL/Linux
+> 💡 Git Bash(Windows)에서는 chmod가 실제 파일시스템에 정확히 반영되지 않아,
+> 권한 실습은 WSL 환경에서 수행했습니다. (→ 트러블슈팅 참고)
+
 1. 권한 확인 (ls -l)
 ```bash
 $ pwd # 현재 위치 확인
@@ -143,7 +178,8 @@ drwxr-xr-x 2 xoalsrla226230 xoalsrla226230 4096 Nov  3 14:05 권한연습-하위
 ```
 
 2. 권한 변경 (chmod) 
-> 000(나,그룹,others), 4(r읽기) + 2(w쓰기) + 1(x실행) + 0(권한없음)
+> 권한 숫자는 `소유자(owner) / 그룹(group) / 기타 사용자(others)` 순서로 표시됩니다.  
+> 각 숫자는 `읽기 r = 4`, `쓰기 w = 2`, `실행 x = 1`을 더해서 계산합니다.
 ```bash
 $ chmod 744 권한연습.txt # 소유자 실행권한 추가 rw-(6)에서 rwx(7)로 변경 (4+2+1=7)
 $ ls -l # 권한 확인
@@ -170,7 +206,7 @@ $ chmod 770 권한연습.txt # 나와 그룹을 제외한 모든 권한 제거 0
 $ ls -l
 total 4
 drwxr-xr-x 2 xoalsrla226230 xoalsrla226230 4096 Nov  3 14:05 권한연습-하위
--rwxrwx--- 1 xoalsrla226230 xoalsrla226230    0 Nov  3 14:05 권한연습.txt # others사용자 ---상태
+-rwxrwx--- 1 xoalsrla226230 xoalsrla226230    0 Nov  3 14:05 권한연습.txt # 기타 사용자 ---상태
 ```
 ```bash
 $ chmod 644 권한연습.txt # 초기 권한상태로 복구
@@ -180,12 +216,19 @@ drwxr-xr-x 2 xoalsrla226230 xoalsrla226230 4096 Nov  3 14:05 권한연습-하위
 -rw-r--r-- 1 xoalsrla226230 xoalsrla226230    0 Nov  3 14:05 권한연습.txt # 초기 644로 복구
 ```
 ```bash
-$ chmod 700 권한연습-하위 # 755(초기권한)→700, 그룹·others 권한 전체 제거 (비밀 폴더)
+$ chmod 700 권한연습-하위 # 755(초기권한)→700, 그룹·기타 권한 전체 제거 (비밀 폴더)
 $ ls -l
 total 4
 drwx------ 2 xoalsrla226230 xoalsrla226230 4096 Nov  3 14:05 권한연습-하위
 -rw-r--r-- 1 xoalsrla226230 xoalsrla226230    0 Nov  3 14:05 권한연습.txt
 ```
 
-### Docker
-1. 
+
+
+
+## 🧩 트러블슈팅
+### 1. Git Bash에서 chmod가 반영되지 않음
+- **문제**: Git Bash(Windows)에서 `chmod 744`를 실행해도 `ls -l` 권한 표기가 바뀌지 않음
+- **원인 가설**: Windows 파일시스템(NTFS)은 리눅스식 rwx 권한 모델을 그대로 지원하지 않음
+- **확인**: 동일 명령을 WSL/Linux 환경에서 실행 → 권한이 정상 반영됨
+- **해결/대안**: 권한 실습은 WSL 환경에서 수행하기로 결정
