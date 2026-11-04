@@ -13,7 +13,7 @@
 | OS | Windows 11 |
 | 쉘/터미널 | WSL/Linux, Git Bash (VS Code 내장) |
 | Git 버전 | 2.56.0.windows.4 |
-| Docker 버전 | 추후 추가 예정 |
+| Docker 버전 | Docker version 29.9.3 |
 
 ---
 
@@ -43,21 +43,21 @@
 - [x] 실행 중 컨테이너 확인 (`docker ps`)
 - [x] 전체 컨테이너 확인 (`docker ps -a`)
 - [x] 컨테이너 로그 확인 (`docker logs`)
-- [ ] 컨테이너 리소스 확인 (`docker stats`)
+- [x] 컨테이너 리소스 확인 (`docker stats`)
 
 ### Ubuntu 컨테이너 실습
 - [x] Ubuntu 컨테이너 실행 (`docker run -it ubuntu bash`)
 - [x] 컨테이너 내부에서 간단 명령 수행 (`ls`, `echo`, `exit`)
 - [x] 실행 중 컨테이너에 접속 (`docker exec -it`)
-- [ ] 백그라운드 컨테이너 실행 (`docker run -dit`)
-- [ ] 이름 붙여 실행 (`docker run --name`)
-- [ ] "attach"와 "exec" 차이 간단 정리
+- [x] 백그라운드 컨테이너 실행 (`docker run -dit`)
+- [x] 이름 붙여 실행 (`docker run --name`)
+- [x] "attach"와 "exec" 차이 간단 정리
 
 ### 컨테이너 관리 (중지 / 재시작 / 삭제)
-- [ ] 컨테이너 중지 (`docker stop`)
-- [ ] 컨테이너 재시작 (`docker start`)
-- [ ] 컨테이너 삭제 (`docker rm`)
-- [ ] 이미지 삭제 (`docker rmi`)
+- [x] 컨테이너 중지 (`docker stop`)
+- [x] 컨테이너 재시작 (`docker start`)
+- [x] 컨테이너 삭제 (`docker rm`)
+- [x] 이미지 삭제 (`docker rmi`)
 > 💡 **stop ↔ start**, **rm ↔ rmi** 짝으로 기억하기
 
 ### Dockerfile / 커스텀 이미지
@@ -128,10 +128,10 @@ $ ls -a
 
 5. 파일 내용 확인 (`cat`)
 ```bash 
-$ echo "TEST" > test.txt # echo명령어로 test.txt 파일에 "TEST"입력
+$ echo "TEST" > TEST.txt # echo명령어로 TEST.txt 파일에 "TEST"입력
 ```
 ```bash
-$ cat test.txt # 입력한 "TEST" 내용 확인
+$ cat TEST.txt # 입력한 "TEST" 내용 확인
 TEST
 ```
 
@@ -310,7 +310,7 @@ Server: # 실제 컨테이너를 돌리는 daemon의 정보
  Firewall Backend: iptables
   EnableUserlandProxy: true
   UserlandProxyPath: /usr/bin/docker-proxy
-  ```
+```
 
 ### Docker 기본 운영 명령 수행
 
@@ -371,7 +371,7 @@ CONTAINER ID   IMAGE         COMMAND    CREATED          STATUS                 
 ```
 > 이미지와 컨테이너 분리해서 알아야함. 이미지는 In Use 상태, 컨테이너는 Exited(0)되어 running이 아니기 때문에 ps에는 보이지 않고 ps -a로 확인 가능.
 > 사용 중, 실행 중의 구분이 모호했으나 이미지와 컨테이너의 차이였음.
-> hello-world는 docker가 제대로 설치되고 작동되는 지 확인하는 테스트용 이미지이기 때문에 임의로 exit하지 않아도 "Hello form Docker!"라는 메시지 출력 후 자동으로 종료됨. 그래서 내가 끄지 않았는데도 ps로 확인 할 수 없었음.
+> hello-world는 docker가 제대로 설치되고 작동되는 지 확인하는 테스트용 이미지이기 때문에 임의로 exit하지 않아도 "Hello from Docker!"라는 메시지 출력 후 자동으로 종료됨. 그래서 내가 끄지 않았는데도 ps로 확인 할 수 없었음.
 
 5. 컨테이너 로그 확인 (`docker logs`)
 ```bash
@@ -492,10 +492,33 @@ CONTAINER ID   IMAGE         COMMAND       CREATED          STATUS              
 ```
 
 6. "attach"와 "exec" 차이 간단 정리
-
-
-
-
+```bash
+$ docker exec -it 835f8e82e7a4 bash # exec 으로 835..컨테이너 실행. 이후 exit
+root@835f8e82e7a4:/# exit
+exit
+```
+```bash
+$ docker ps # exit를 하더라도 STATUS가 UP 상태임을 확인.
+CONTAINER ID   IMAGE     COMMAND       CREATED             STATUS          PORTS     NAMES
+835f8e82e7a4   ubuntu    "/bin/bash"   About an hour ago   Up 58 minutes             focused_lumiere
+```
+```bash
+$ docker attach 835f8e82e7a4 # attach를 사용해 동일 컨테이너 실행. 이후 exit
+root@835f8e82e7a4:/# exit
+exit
+```
+```bash
+$ docker ps -a # Exsited 상태 확인 
+CONTAINER ID   IMAGE     COMMAND       CREATED             STATUS                           PORTS     NAMES
+636354721ff5   ubuntu    "/bin/bash"   56 minutes ago      Exited (137) 38 minutes ago                naughty_hoover
+835f8e82e7a4   ubuntu    "/bin/bash"   About an hour ago   Exited (0) About a minute ago              focused_lumiere
+138cba0d7b9e   ubuntu    "bash"        3 hours ago         Exited (137) About an hour ago             optimistic_mcnulty
+79389cf69868   ubuntu    "bash"        4 hours ago         Exited (127) 4 hours ago                   eager_kepler
+```
+> attach : 컨테이너의 "메인 프로세스"에 직접 연결. exit하면 컨테이너도 종료됨.
+> exec   : 컨테이너 안에서 "새 프로세스"를 실행. exit해도 컨테이너는 계속 실행됨.
+> 실행 중인 컨테이너에 들어갈 땐 `docker exec -it`를 사용 하는 것이 안전할 듯함.
+> ps. attach 중 Ctrl+P → Ctrl+Q 를 누르면, 컨테이너를 끄지 않고 빠져나올 수 있음(detach).
 
 ### 컨테이너 관리 (중지 / 재시작 / 삭제)
 
@@ -523,7 +546,7 @@ CONTAINER ID   IMAGE     COMMAND       CREATED         STATUS         PORTS     
 835f8e82e7a4   ubuntu    "/bin/bash"   7 minutes ago   Up 7 seconds             focused_lumiere
 ```
 
-3. 컨테이너 삭제 (`docker re`)
+3. 컨테이너 삭제 (`docker rm`)
 ```bash
 $ docker ps -a # 삭제 전 전체 컨테이너 확인
 CONTAINER ID   IMAGE         COMMAND       CREATED          STATUS                        PORTS     NAMES
@@ -586,6 +609,9 @@ IMAGE           ID             DISK USAGE   CONTENT SIZE   EXTRA
 ubuntu:latest   6a06111c3b0a        163MB         45.9MB    U   
 ```
 
+### Dockerfile / 커스텀 이미지
+
+1. Dockerfile 작성
 
 
 
