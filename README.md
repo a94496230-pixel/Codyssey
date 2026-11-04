@@ -24,10 +24,10 @@
 - [x] 목록 확인 숨김 파일 포함 (ls -a)
 - [x] 디렉토리 이동 (cd)
 - [x] 디렉토리/파일 생성 (mkdir, touch)
+- [x] 파일 내용 확인 (cat)
 - [x] 파일 복사 (cp)
 - [x] 파일 이동/이름변경 (mv)
 - [x] 파일 삭제 (rm)
-- [ ] 파일 내용 확인 (cat)
 
 ### 파일 권한
 - [x] 권한 확인 (ls -l)
@@ -43,6 +43,7 @@
 - [ ] 실행 중 컨테이너 확인 (docker ps)
 - [ ] 전체 컨테이너 확인 (docker ps -a)
 - [ ] 컨테이너 로그 확인 (docker logs)
+> 이하 Ubuntu 컨테이너 실습과 함께 수행
 - [ ] 컨테이너 리소스 확인 (docker stats)
 - [ ] 컨테이너 중지 (docker stop)
 - [ ] 컨테이너 삭제 (docker rm)
@@ -119,7 +120,16 @@ $ ls -a
 ./  ../  .git/  Hello.txt  practice/  README.md  TEST/  TEST.txt
 ```
 
-5. 파일 복사 (cp)
+5. 파일 내용 확인 (cat)
+```bash 
+$ echo "TEST" > test.txt # echo명령어로 test.txt 파일에 "TEST"입력
+```
+```bash
+$ cat test.txt # 입력한 "TEST" 내용 확인
+TEST
+```
+
+6. 파일 복사 (cp)
 ```bash
 $ cp TEST.txt TEST-사본.txt 
 ```
@@ -128,7 +138,7 @@ $ ls -a
 ./  ../  .git/  Hello.txt  practice/  README.md  TEST/  TEST.txt  TEST-사본.txt
 ```
 
-6. 파일 이동/이름변경 (mv)
+7. 파일 이동/이름변경 (mv)
 ```bash
 $ mv TEST-사본.txt TEST-변경.txt # 사본을 변경으로 파일 이름 변경
 ```
@@ -151,7 +161,7 @@ $ ls -a # 변경 파일이 TEST파일로 이동되었는지 확인2
 ./  ../  TEST-변경.txt
 ```
 
-7. 파일 삭제 (rm)
+8. 파일 삭제 (rm)
 ```bash
 $ rm -r TEST TEST.txt # -r은 디렉토리를 삭제하기 위한 명령어. 파일은 -r 없이도 삭제 가능
 ```
@@ -222,6 +232,178 @@ total 4
 drwx------ 2 xoalsrla226230 xoalsrla226230 4096 Nov  3 14:05 권한연습-하위
 -rw-r--r-- 1 xoalsrla226230 xoalsrla226230    0 Nov  3 14:05 권한연습.txt
 ```
+
+### Docker 설치 및 기본점검
+
+1. Docker 버전 확인 (docker --version)
+```bash
+$ docker --version
+Docker version 29.9.3, build 5457199
+```
+
+2. Docker 데몬 동작 확인 (docker info)
+```bash
+$ docker info
+Client: Docker Engine - Community # docker의 명령을 입력하는 클라이언츠(CLI) 정보
+ Version:    29.9.3
+ Context:    default
+ Debug Mode: false
+ Plugins:
+  buildx: Docker Buildx (Docker Inc.)
+    Version:  v0.38.1
+    Path:     /usr/libexec/docker/cli-plugins/docker-buildx
+  compose: Docker Compose (Docker Inc.)
+    Version:  v5.7.0
+    Path:     /usr/libexec/docker/cli-plugins/docker-compose
+
+Server: # 실제 컨테이너를 돌리는 daemon의 정보
+ Containers: 0
+  Running: 0
+  Paused: 0
+  Stopped: 0
+ Images: 0
+ Server Version: 29.9.3
+ Storage Driver: overlayfs
+  driver-type: io.containerd.snapshotter.v1
+ Logging Driver: json-file
+ Cgroup Driver: systemd
+ Cgroup Version: 2
+ Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog
+ CDI spec directories:
+  /etc/cdi
+  /var/run/cdi
+ Swarm: inactive
+ Runtimes: io.containerd.runc.v2 runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: b7a25261e029d68978bbf290df0a62fc819b3c51
+ runc version: v1.5.2-0-g29dd3dc2
+ init version: de40ad0
+ Security Options:
+  seccomp
+   Profile: builtin
+  cgroupns
+ Kernel Version: 6.18.54.1-microsoft-standard-WSL2
+ Operating System: Ubuntu 22.04.5 LTS
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 24
+ Total Memory: 15.25GiB
+ Name: GNIA-C202-A04
+ ID: fd6bc33e-cf90-4269-a8dd-4a38cf4860e9
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: false
+ Experimental: false
+ Insecure Registries:
+  127.0.0.0/8
+  ::1/128
+ Live Restore Enabled: false
+ Firewall Backend: iptables
+  EnableUserlandProxy: true
+  UserlandProxyPath: /usr/bin/docker-proxy
+  ```
+
+### Docker 기본 운영 명령 수행
+
+1. hello-world 컨테이너 실행 (docker run hello-world)
+```bash
+$ docker run hello-world
+Unable to find image 'hello-world:latest' locally # local에서 hello-world를 찾을 수 없음
+latest: Pulling from library/hello-world # 인터넷에서 가져옴
+4f55086f7dd0: Pull complete 
+d5e71e642bf5: Download complete 
+Digest: sha256:c567b231f65614688711a75f31518a064258a51d442117a3e771a3a8fdba78ef
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker! # 결과
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps: # 과정 메시지
+ 1. The Docker client contacted the Docker daemon. # CLI가 daemon(server)에게 요청
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal. # daemon이 CLI에게 결과를 돌려줌
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+ ```
+> 입문 교육용 이미지인 hello-world에서 여러 안내 메시지가 출력됨.
+
+
+2. 이미지 목록 확인 (docker images)
+```bash
+$ docker images
+                                                                                                     i Info →   U  In Use
+IMAGE                ID             DISK USAGE   CONTENT SIZE   EXTRA
+hello-world:latest   c567b231f656       25.9kB         9.49kB    U   
+```
+> 이름 : 뒤는 태그. 지정하지 않으면 자동으로 latest, ID는 고유식별ID, U는 in use 사용 중.
+
+3. 실행 중 컨테이너 확인 (docker ps)
+```bash
+$ docker ps # 실행중인 컨테이너 없음
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+```
+
+4. 전체 컨테이너 확인 (docker ps -a)
+```bash
+$ docker ps -a
+CONTAINER ID   IMAGE         COMMAND    CREATED          STATUS                      PORTS     NAMES
+61344da3d406   hello-world   "/hello"   21 minutes ago   Exited (0) 21 minutes ago             laughing_driscoll
+```
+> 이미지와 컨테이너 분리해서 알아야함. 이미지는 In Use 상태, 컨테이너는 Exited(0)되어 running이 아니기 때문에 ps에는 보이지 않고 ps -a로 확인 가능.
+> 사용 중, 실행 중의 구분이 모호했으나 이미지와 컨테이너의 차이였음.
+> hello-world는 docker가 제대로 설치되고 작동되는 지 확인하는 테스트용 이미지이기 때문에 임의로 exit하지 않아도 "Hello form Docker!"라는 메시지 출력 후 자동으로 종료됨. 그래서 내가 끄지 않았는데도 ps로 확인 할 수 없었음.
+
+5. 컨테이너 로그 확인 (docker logs)
+```bash
+$ docker logs 61344 # 컨테이너의 고유ID 앞부분 만으로 출력가능. 이전에 출력됐던 log가 출력됨.
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with: # Ubuntu 컨테이너 추천. 교육용이라 출력되는 듯
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+ ```
+
+
+
+### Ubuntu 컨테이너 실습
+
+1. Ubuntu 컨테이너 실행 (docker run -it ubuntu bash)
+
+
+
+
+
+
 
 
 
