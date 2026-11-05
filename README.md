@@ -1,23 +1,34 @@
+<div align="center">
+
 # 🖥️ 개발 환경 세팅 미션
 
-## 🔗 제출 저장소
-- GitHub Repository: https://github.com/a94496230-pixel/Codyssey
+**터미널 · Docker · Git/GitHub 를 직접 세팅하며 기록한 개발 워크스테이션 구축기**
 
+![Windows](https://img.shields.io/badge/OS-Windows_11-0078D6?logo=windows&logoColor=white)
+![WSL](https://img.shields.io/badge/WSL-Ubuntu_22.04-E95420?logo=ubuntu&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-29.9.3-2496ED?logo=docker&logoColor=white)
+![Git](https://img.shields.io/badge/Git-2.53.0-F05032?logo=git&logoColor=white)
 
-## 📌 프로젝트 개요
-터미널, Docker, Git, GitHub를 직접 실습하고
-개발 환경 세팅 전 과정을 기록하는 미션입니다.
+[![Repository](https://img.shields.io/badge/GitHub-Repository-181717?logo=github&logoColor=white)](https://github.com/a94496230-pixel/Codyssey)
+
+</div>
+
+---
+
+## 📌 미션 개요
+> 터미널, Docker, Git, GitHub를 직접 실습하고
+> 개발 환경 구축 전 과정을 명령어·출력·스크린샷으로 기록한 미션입니다.
 
 ---
 
 ## 💻 실행 환경
 
 | 항목 | 내용 |
-|------|------|
-| OS | Windows 11 |
-| 쉘/터미널 | WSL/Linux, Git Bash (VS Code 내장) |
-| Git 버전 | 2.53.0 |
-| Docker 버전 | Docker version 29.9.3 |
+|:---:|:---|
+| **OS** | Windows 11 |
+| **쉘/터미널** | WSL/Linux, Git Bash (VS Code 내장) |
+| **Git 버전** | 2.53.0 |
+| **Docker 버전** | Docker version 29.9.3 |
 
 ---
 
@@ -88,6 +99,10 @@
 ---
 
 ## 🔍 검증 방법 및 결과
+
+---
+
+### **🐧 PART 1. 터미널 & 권한**
 
 ### 1. 터미널 조작
 > 🖥️ 수행 환경: Git Bash (Windows, VS Code 내장)
@@ -251,6 +266,10 @@ drwx------ 2 xoalsrla226230 xoalsrla226230 4096 Nov  3 14:05 권한연습-하위
 ```
 
 </details>
+
+---
+
+### **🐳 PART 2. Docker**
 
 ### 3. Docker 설치 및 기본점검
 <details>
@@ -810,6 +829,9 @@ $ docker run -d --name bind-test -p 8081:80 -v $(pwd):/usr/share/nginx/html ngin
 > 새로고침 즉시 반영
 </details>
 
+---
+
+### **🔀 PART 3. Git & GitHub**
 
 ### 9. Git / GitHub
 <details>
@@ -907,6 +929,7 @@ origin  https://github.com/a9********el/Codyssey.git (push)
 >연동 화면
 </details>
 
+---
 
 ## 🧩 트러블슈팅
 ### 1. Git Bash에서 chmod가 반영되지 않음
@@ -953,3 +976,11 @@ origin  https://github.com/a9********el/Codyssey.git (push)
 ### 5. Git vs GitHub
 - **Git**: 내 컴퓨터(로컬)에서 변경 이력을 관리하는 **버전 관리 도구**.
 - **GitHub**: Git 저장소를 온라인에 올려 공유·협업하는 **원격 호스팅 플랫폼**.
+
+---
+
+<div align="center">
+
+📝 본 문서는 개발 환경 세팅 미션 수행 과정을 기록한 기술 문서입니다.
+
+</div>
