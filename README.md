@@ -675,7 +675,11 @@ COPY index.html /usr/share/nginx/html/index.html
 # 내가 만든 index.html을 nginx 기본 경로에 복사.
 ```
 > 💡 nginx는 `/usr/share/nginx/html/`을 기본 웹페이지 경로로 사용함.
-> 내 html을 포함한 커스텀 이미지를 만들어 브라우저를 통해 결과를 즉각적으로 확인할 수 있게 이미지를 커스텀 하였고, 한글 깨짐 방지를 위한 UTF-8 메타 태그를 추가함.
+> **커스텀 포인트 요약**
+> | 베이스 이미지 | 커스텀 내용 | 목적 |
+> |---|---|---|
+> | `nginx:latest` | `index.html` 교체(COPY) | 기본 페이지 대신 내 페이지를 노출 |
+> | `index.html` | `<meta charset="UTF-8">` 추가 | 한글 깨짐 방지 |
 
 2. 커스텀 이미지 빌드 (`docker build`)
 ```bash
