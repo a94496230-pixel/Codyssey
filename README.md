@@ -78,9 +78,8 @@
 - [x] 사용자 정보 등록
 - [x] 레포지토리 클론
 - [x] add / commit / push
-- [ ] branch 생성 및 관리
-- [ ] git config --list 결과 기록
-- [ ] VSCode ↔ GitHub 연동 증거
+- [x] branch 생성 및 관리
+- [x] VSCode ↔ GitHub 연동 증거
 
 ---
 
@@ -776,7 +775,7 @@ $ git --version
 git version 2.53.0
 ```
 
-2. 사용자 정보 등록
+2. 사용자 등록 및 정보 확인 (`--list`)
 ```bash
 $ git config --list # 사용자 등록 상태 확인
 user.name=a9************el
@@ -814,7 +813,52 @@ Resolving deltas: 100% (13/13), done.
 ..  .vscode  README.md  images           practice
 ```
 
-4. 
+4. `add` / `commit` / `push`
+```bash
+$ git add . # . 은 전부 add
+$ git commit -m "최신화" # -m 뒤에 따옴표는 정보 입력
+$ git push # 업로드 pull은 다운로드
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 1.29 KiB | 1.29 MiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/a9*********el/Codyssey.git
+   421ff78..50ff1ab  main -> main
+```
+
+5. branch 생성 및 관리
+
+```bash
+$ git branch # 현재 branch 확인
+* main
+$ git branch feature/test  # 신규 branch 생성
+$ git branch # 생성 확인
+  feature/test
+* main
+$ git checkout feature/test # 신규 branch로 이동
+Switched to branch 'feature/test'
+$  git branch  # 이동된 상태 확인
+* feature/test
+  main
+$ git checkout main # 다시 main branch로 이동
+Switched to branch 'main'
+Your branch is up to date with 'origin/main'.
+$ git branch -d feature/test # 신규 branch 삭제
+Deleted branch feature/test (was 50ff1ab).
+```
+
+6. VSCode ↔ GitHub 연동
+```bash
+$ git remote -v
+origin  https://github.com/a9********el/Codyssey.git (fetch)
+origin  https://github.com/a9********el/Codyssey.git (push)
+```
+
+![VSCode,GitHub연동](./images/연동.jpg)
+>연동 화면
 
 
 
