@@ -60,20 +60,18 @@
 - [x] 이미지 삭제 (`docker rmi`)
 > 💡 **stop ↔ start**, **rm ↔ rmi** 짝으로 기억하기
 
-### Dockerfile / 커스텀 이미지
-- [ ] Dockerfile 작성
-- [ ] 커스텀 이미지 빌드 (`docker build`)
-- [ ] 컨테이너 실행 성공
-- [ ] 이미지 층(layer) 확인 (`docker history`)
+### Dockerfile / 커스텀 이미지 / 포트 매핑
+- [x] Dockerfile 작성
+- [x] 커스텀 이미지 빌드 (`docker build`)
+- [x] 컨테이너, 포트 매핑 실행 (`docker run`, `-p 8080:80`)
+- [x] 이미지 층(layer) 확인 (`docker history`)
 
-### 포트 매핑
-- [ ] 포트 매핑 실행 (`-p host:container`)
-- [ ] 브라우저 접속 화면(주소창 포함) 첨부
 
-### 바인드 마운트 / 볼륨
-- [ ] 바인드 마운트 실행 + 호스트 변경 전/후 비교
-- [ ] 볼륨 생성/연결/검증 (`docker volume`)
-- [ ] 컨테이너 삭제 전/후 데이터 유지 확인 ⭐
+### 볼륨 / 바인드 마운트
+- [x] 볼륨 생성/연결/검증 (`docker volume`)
+- [x] 컨테이너 삭제 전/후 데이터 유지 확인
+- [x] 바인드 마운트 실행 + 호스트 변경 전/후 비교
+
 
 ### Git / GitHub
 - [x] Git 설치 확인
@@ -612,6 +610,7 @@ ubuntu:latest   6a06111c3b0a        163MB         45.9MB    U
 ### Dockerfile / 커스텀 이미지
 
 1. Dockerfile 작성
+> 앞으로 진행할 이미지 만들기 이미지 만들기 → 웹페이지 띄우기 → 브라우저 접속 → 데이터 유지(볼륨, 바인드)가 매끄럽게 이어지며 학습하는 데 nginx가 유리하다고 생각되어 선택함.
 ```bash
 $ mkdir mynginx # mynginx 폴더 생성
 $ cd mynginx
@@ -769,11 +768,53 @@ $ docker run -d --name bind-test -p 8081:80 -v $(pwd):/usr/share/nginx/html ngin
 > 새로고침 즉시 반영
 
 
+### Git / GitHub
 
+1. Git 설치 확인
+```bash
+$ git --version
+git version 2.53.0
+```
 
+2. 사용자 정보 등록
+```bash
+$ git config --list # 사용자 등록 상태 확인
+user.name=a9************el
+user.email=a9*******@gmail.com
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+remote.origin.url=https://github.com/a9*********el/Codyssey.git
+remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+branch.main.remote=origin
+branch.main.merge=refs/heads/main
+branch.main.vscode-merge-base=origin/main
+```
 
+3. 레포지토리 클론
 
+```bash
+$ mkdir CloneTest # 클론을 위한 테스트 폴더 생성
+$ cd CloneTest
+/CloneTest$ git clone https://github.com/a9********el/Codyssey
+Cloning into 'Codyssey'...
+remote: Enumerating objects: 58, done.
+remote: Counting objects: 100% (58/58), done.
+remote: Compressing objects: 100% (36/36), done.
+remote: Total 58 (delta 13), reused 55 (delta 10), pack-reused 0 (from 0)
+Receiving objects: 100% (58/58), 93.16 KiB | 9.32 MiB/s, done.
+Resolving deltas: 100% (13/13), done.
+```
+```bash
+/CloneTest$ ls -a # GitHub 클론 확인
+.  ..  Codyssey
+/CloneTest/Codyssey$ ls -a
+.   .git     Hello.txt  docker-practice  mynginx   권한연습
+..  .vscode  README.md  images           practice
+```
 
+4. 
 
 
 
