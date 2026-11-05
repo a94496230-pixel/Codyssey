@@ -23,7 +23,7 @@
 
 ## ✅ 수행 항목 체크리스트
 
-### 터미널 조작 [🖱️검증 및 결과](#터미널-조작)
+### 1. 터미널 조작 [🖱️검증 및 결과](#터미널-조작)
 - [x] 현재 위치 확인 (`pwd`)
 - [x] 목록 확인 숨김 파일 포함 (`ls -a`)
 - [x] 디렉토리 이동 (`cd`)
@@ -33,15 +33,15 @@
 - [x] 파일 이동/이름변경 (`mv`)
 - [x] 파일 삭제 (`rm`)
 
-### 파일 권한 [🖱️검증 및 결과](#파일-권한)
+### 2. 파일 권한 [🖱️검증 및 결과](#파일-권한)
 - [x] 권한 확인 (`ls -l`)
 - [x] 권한 변경 (`chmod`)
 
-### Docker 설치 및 기본점검 [🖱️검증 및 결과](#docker-설치-및-기본점검)
+### 3. Docker 설치 및 기본점검 [🖱️검증 및 결과](#docker-설치-및-기본점검)
 - [x] Docker 버전 확인 (`docker --version`)
 - [x] Docker 데몬 동작 확인 (`docker info`)
 
-### Docker 기본 운영 명령 수행 [🖱️검증 및 결과](#docker-기본-운영-명령-수행)
+### 4. Docker 기본 운영 명령 수행 [🖱️검증 및 결과](#docker-기본-운영-명령-수행)
 - [x] hello-world 컨테이너 실행 (`docker run hello-world`)
 - [x] 이미지 목록 확인 (`docker images`)
 - [x] 실행 중 컨테이너 확인 (`docker ps`)
@@ -49,7 +49,7 @@
 - [x] 컨테이너 로그 확인 (`docker logs`)
 - [x] 컨테이너 리소스 확인 (`docker stats`)
 
-### Ubuntu 컨테이너 실습 [🖱️검증 및 결과](#ubuntu-컨테이너-실습)
+### 5. Ubuntu 컨테이너 실습 [🖱️검증 및 결과](#ubuntu-컨테이너-실습)
 - [x] Ubuntu 컨테이너 실행 (`docker run -it ubuntu bash`)
 - [x] 컨테이너 내부에서 간단 명령 수행 (`ls`, `echo`, `exit`)
 - [x] 실행 중 컨테이너에 접속 (`docker exec -it`)
@@ -57,27 +57,27 @@
 - [x] 이름 붙여 실행 (`docker run --name`)
 - [x] "attach"와 "exec" 차이 간단 정리
 
-### 컨테이너 관리 (중지 / 재시작 / 삭제) [🖱️검증 및 결과](#컨테이너-관리-중지--재시작--삭제)
+### 6. 컨테이너 관리 (중지 / 재시작 / 삭제) [🖱️검증 및 결과](#컨테이너-관리-중지--재시작--삭제)
 - [x] 컨테이너 중지 (`docker stop`)
 - [x] 컨테이너 재시작 (`docker start`)
 - [x] 컨테이너 삭제 (`docker rm`)
 - [x] 이미지 삭제 (`docker rmi`)
 > 💡 **stop ↔ start**, **rm ↔ rmi** 짝으로 기억하기
 
-### Dockerfile / 커스텀 이미지 / 포트 매핑 [🖱️검증 및 결과](#dockerfile--커스텀-이미지)
+### 7. Dockerfile / 커스텀 이미지 / 포트 매핑 [🖱️검증 및 결과](#dockerfile--커스텀-이미지)
 - [x] Dockerfile 작성
 - [x] 커스텀 이미지 빌드 (`docker build`)
 - [x] 컨테이너, 포트 매핑 실행 (`docker run`, `-p 8080:80`)
 - [x] 이미지 층(layer) 확인 (`docker history`)
 
 
-### 볼륨 / 바인드 마운트 [🖱️검증 및 결과](#볼륨--바인드-마운트)
+### 8. 볼륨 / 바인드 마운트 [🖱️검증 및 결과](#볼륨--바인드-마운트)
 - [x] 볼륨 생성/연결/검증 (`docker volume`)
 - [x] 컨테이너 삭제 전/후 데이터 유지 확인
 - [x] 바인드 마운트 실행 + 호스트 변경 전/후 비교
 
 
-### Git / GitHub [🖱️검증 및 결과](#git--github)
+### 9. Git / GitHub [🖱️검증 및 결과](#git--github)
 - [x] Git 설치 확인
 - [x] 사용자 정보 등록
 - [x] 레포지토리 클론
@@ -89,7 +89,7 @@
 
 ## 🔍 검증 방법 및 결과
 
-### 터미널 조작
+### 1. 터미널 조작
 > 🖥️ 수행 환경: Git Bash (Windows, VS Code 내장)
 <details>
 <summary> 검증 내용  </summary>
@@ -184,7 +184,7 @@ $ ls -a
 
 
 
-### 파일 권한
+### 2. 파일 권한
 > 🐧 수행 환경: WSL/Linux
 > 💡 Git Bash(Windows)에서는 chmod가 실제 파일시스템에 정확히 반영되지 않아,
 > 권한 실습은 WSL 환경에서 수행했습니다. (→ 트러블슈팅 참고) [🖱️참고](#1-git-bash에서-chmod가-반영되지-않음)
@@ -252,7 +252,7 @@ drwx------ 2 xoalsrla226230 xoalsrla226230 4096 Nov  3 14:05 권한연습-하위
 
 </details>
 
-### Docker 설치 및 기본점검
+### 3. Docker 설치 및 기본점검
 <details>
 <summary> 검증 내용  </summary>
 
@@ -328,7 +328,7 @@ Server: # 실제 컨테이너를 돌리는 daemon의 정보
 ```
 </details>
 
-### Docker 기본 운영 명령 수행
+### 4. Docker 기본 운영 명령 수행
 <details>
 <summary> 검증 내용  </summary>
 
@@ -432,7 +432,7 @@ CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT     MEM %     NET I
 ```
 </details>
 
-### Ubuntu 컨테이너 실습
+### 5. Ubuntu 컨테이너 실습
 <details>
 <summary> 검증 내용  </summary>
 
@@ -546,7 +546,7 @@ CONTAINER ID   IMAGE     COMMAND       CREATED             STATUS               
 > ps. attach 중 Ctrl+P → Ctrl+Q 를 누르면, 컨테이너를 끄지 않고 빠져나올 수 있음(detach).
 </details>
 
-### 컨테이너 관리 (중지 / 재시작 / 삭제)
+### 6. 컨테이너 관리 (중지 / 재시작 / 삭제)
 <details>
 <summary> 검증 내용  </summary>
 
@@ -638,7 +638,7 @@ ubuntu:latest   6a06111c3b0a        163MB         45.9MB    U
 ```
 </details>
 
-### Dockerfile / 커스텀 이미지
+### 7. Dockerfile / 커스텀 이미지
 <details>
 <summary> 검증 내용  </summary>
 
@@ -737,7 +737,7 @@ IMAGE          CREATED       CREATED BY                                       SI
 </details>
 
 
-### 볼륨 / 바인드 마운트
+### 8. 볼륨 / 바인드 마운트
 <details>
 <summary> 검증 내용  </summary>
 
@@ -807,7 +807,7 @@ $ docker run -d --name bind-test -p 8081:80 -v $(pwd):/usr/share/nginx/html ngin
 </details>
 
 
-### Git / GitHub
+### 9. Git / GitHub
 <details>
 <summary> 검증 내용  </summary>
 
