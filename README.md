@@ -1,5 +1,9 @@
 # 🖥️ 개발 환경 세팅 미션
 
+## 🔗 제출 저장소
+- GitHub Repository: https://github.com/a94496230-pixel/Codyssey
+
+
 ## 📌 프로젝트 개요
 터미널, Docker, Git, GitHub를 직접 실습하고
 개발 환경 세팅 전 과정을 기록하는 미션입니다.
@@ -12,14 +16,14 @@
 |------|------|
 | OS | Windows 11 |
 | 쉘/터미널 | WSL/Linux, Git Bash (VS Code 내장) |
-| Git 버전 | 2.56.0.windows.4 |
+| Git 버전 | 2.53.0 |
 | Docker 버전 | Docker version 29.9.3 |
 
 ---
 
 ## ✅ 수행 항목 체크리스트
 
-### 터미널 조작
+### 터미널 조작 [🖱️검증 및 결과](#터미널-조작)
 - [x] 현재 위치 확인 (`pwd`)
 - [x] 목록 확인 숨김 파일 포함 (`ls -a`)
 - [x] 디렉토리 이동 (`cd`)
@@ -29,15 +33,15 @@
 - [x] 파일 이동/이름변경 (`mv`)
 - [x] 파일 삭제 (`rm`)
 
-### 파일 권한
+### 파일 권한 [🖱️검증 및 결과](#파일-권한)
 - [x] 권한 확인 (`ls -l`)
 - [x] 권한 변경 (`chmod`)
 
-### Docker 설치 및 기본점검
+### Docker 설치 및 기본점검 [🖱️검증 및 결과](#docker-설치-및-기본점검)
 - [x] Docker 버전 확인 (`docker --version`)
 - [x] Docker 데몬 동작 확인 (`docker info`)
 
-### Docker 기본 운영 명령 수행
+### Docker 기본 운영 명령 수행 [🖱️검증 및 결과](#docker-기본-운영-명령-수행)
 - [x] hello-world 컨테이너 실행 (`docker run hello-world`)
 - [x] 이미지 목록 확인 (`docker images`)
 - [x] 실행 중 컨테이너 확인 (`docker ps`)
@@ -45,7 +49,7 @@
 - [x] 컨테이너 로그 확인 (`docker logs`)
 - [x] 컨테이너 리소스 확인 (`docker stats`)
 
-### Ubuntu 컨테이너 실습
+### Ubuntu 컨테이너 실습 [🖱️검증 및 결과](#ubuntu-컨테이너-실습)
 - [x] Ubuntu 컨테이너 실행 (`docker run -it ubuntu bash`)
 - [x] 컨테이너 내부에서 간단 명령 수행 (`ls`, `echo`, `exit`)
 - [x] 실행 중 컨테이너에 접속 (`docker exec -it`)
@@ -53,27 +57,27 @@
 - [x] 이름 붙여 실행 (`docker run --name`)
 - [x] "attach"와 "exec" 차이 간단 정리
 
-### 컨테이너 관리 (중지 / 재시작 / 삭제)
+### 컨테이너 관리 (중지 / 재시작 / 삭제) [🖱️검증 및 결과](#컨테이너-관리-중지--재시작--삭제)
 - [x] 컨테이너 중지 (`docker stop`)
 - [x] 컨테이너 재시작 (`docker start`)
 - [x] 컨테이너 삭제 (`docker rm`)
 - [x] 이미지 삭제 (`docker rmi`)
 > 💡 **stop ↔ start**, **rm ↔ rmi** 짝으로 기억하기
 
-### Dockerfile / 커스텀 이미지 / 포트 매핑
+### Dockerfile / 커스텀 이미지 / 포트 매핑 [🖱️검증 및 결과](#dockerfile--커스텀-이미지)
 - [x] Dockerfile 작성
 - [x] 커스텀 이미지 빌드 (`docker build`)
 - [x] 컨테이너, 포트 매핑 실행 (`docker run`, `-p 8080:80`)
 - [x] 이미지 층(layer) 확인 (`docker history`)
 
 
-### 볼륨 / 바인드 마운트
+### 볼륨 / 바인드 마운트 [🖱️검증 및 결과](#볼륨--바인드-마운트)
 - [x] 볼륨 생성/연결/검증 (`docker volume`)
 - [x] 컨테이너 삭제 전/후 데이터 유지 확인
 - [x] 바인드 마운트 실행 + 호스트 변경 전/후 비교
 
 
-### Git / GitHub
+### Git / GitHub [🖱️검증 및 결과](#git--github)
 - [x] Git 설치 확인
 - [x] 사용자 정보 등록
 - [x] 레포지토리 클론
@@ -87,12 +91,13 @@
 
 ### 터미널 조작
 > 🖥️ 수행 환경: Git Bash (Windows, VS Code 내장)
-
-1. 현재 위치 확인 (`pwd`)
+<details>
+<summary>1. 현재 위치 확인 (`pwd`)</summary>
 ```bash
 $ pwd
 /c/Codyssey-Campus/codyssey
 ```
+</details>
 
 2. 목록 확인 숨김 파일 포함 (`ls -a`)
 ```bash
@@ -176,7 +181,7 @@ $ ls -a
 ### 파일 권한
 > 🐧 수행 환경: WSL/Linux
 > 💡 Git Bash(Windows)에서는 chmod가 실제 파일시스템에 정확히 반영되지 않아,
-> 권한 실습은 WSL 환경에서 수행했습니다. (→ 트러블슈팅 참고)
+> 권한 실습은 WSL 환경에서 수행했습니다. (→ 트러블슈팅 참고) [🖱️참고](#1-git-bash에서-chmod가-반영되지-않음)
 
 1. 권한 확인 (`ls -l`)
 ```bash
@@ -247,7 +252,7 @@ Docker version 29.9.3, build 5457199
 2. Docker 데몬 동작 확인 (`docker info`)
 ```bash
 $ docker info
-Client: Docker Engine - Community # docker의 명령을 입력하는 클라이언츠(CLI) 정보
+Client: Docker Engine - Community # docker의 명령을 입력하는 클라이언트(CLI) 정보
  Version:    29.9.3
  Context:    default
  Debug Mode: false
@@ -416,7 +421,7 @@ CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT     MEM %     NET I
 1. Ubuntu 컨테이너 실행 (`docker run -it ubuntu bash`)
 ```bash
 $ docker run -it ubuntu bash
-Unable to find image 'ubuntu:latest' locally # hello-world와 마찬가지고 local에 없어서 인터넷에서 다운로드.
+Unable to find image 'ubuntu:latest' locally # hello-world와 마찬가지로 local에 없어서 인터넷에서 다운로드.
 latest: Pulling from library/ubuntu
 f3f25b84a7d7: Pull complete 
 edafa32f5d9e: Pull complete 
@@ -458,7 +463,12 @@ CONTAINER ID   IMAGE         COMMAND    CREATED             STATUS              
 
 3. 실행 중 컨테이너에 접속 (`docker exec -it`)
 ```bash
-$ docker exec -it 138cba0d7b9e bash
+$ docker start 138cba0d7b9e # 컨테이너 실행
+138cba0d7b9e
+```
+```bash
+$ docker exec -it 138cba0d7b9e bash 
+root@138cba0d7b9e:/# # 접속 확인
 ```
 
 4. 백그라운드 컨테이너 실행 (`docker run -dit`)
@@ -505,7 +515,7 @@ root@835f8e82e7a4:/# exit
 exit
 ```
 ```bash
-$ docker ps -a # Exsited 상태 확인 
+$ docker ps -a # Exited 상태 확인 
 CONTAINER ID   IMAGE     COMMAND       CREATED             STATUS                           PORTS     NAMES
 636354721ff5   ubuntu    "/bin/bash"   56 minutes ago      Exited (137) 38 minutes ago                naughty_hoover
 835f8e82e7a4   ubuntu    "/bin/bash"   About an hour ago   Exited (0) About a minute ago              focused_lumiere
@@ -580,7 +590,7 @@ ubuntu:latest        6a06111c3b0a        163MB         45.9MB    U
 $ docker rmi c567b231f656
 Error response from daemon: conflict: unable to delete c567b231f656 (must be forced) - image is being used by stopped container 61344da3d406
 ```
-> 삭제가 되지 않음. 트러블슈팅 참고.
+> 삭제가 되지 않음. 트러블슈팅 참고.[🖱️참고](#2-docker에서-image를-삭제하려고-했으나-오류-발생)
 ```bash
 $ docker ps -a # 삭제하려던 이미지인 헬로월드 컨테이너 확인
 CONTAINER ID   IMAGE         COMMAND       CREATED          STATUS                            PORTS     NAMES
@@ -609,7 +619,7 @@ ubuntu:latest   6a06111c3b0a        163MB         45.9MB    U
 ### Dockerfile / 커스텀 이미지
 
 1. Dockerfile 작성
-> 앞으로 진행할 이미지 만들기 이미지 만들기 → 웹페이지 띄우기 → 브라우저 접속 → 데이터 유지(볼륨, 바인드)가 매끄럽게 이어지며 학습하는 데 nginx가 유리하다고 생각되어 선택함.
+> 앞으로 진행할 이미지 만들기 → 웹페이지 띄우기 → 브라우저 접속 → 데이터 유지(볼륨, 바인드)가 매끄럽게 이어지며 학습하는 데 nginx가 유리하다고 생각되어 선택함.
 ```bash
 $ mkdir mynginx # mynginx 폴더 생성
 $ cd mynginx
@@ -618,7 +628,7 @@ $ cd mynginx
 Dockerfile  index.html
 ```
 
-`index.html` — 웹에 띄울 내용 작성
+`index.html` — 웹에 띄울 내용 작성 [🖱️트러블슈팅](#3-웹페이지-한글-깨짐-현상)
 ```html
 <!DOCTYPE html>
 <html>
@@ -641,6 +651,7 @@ COPY index.html /usr/share/nginx/html/index.html
 # 내가 만든 index.html을 nginx 기본 경로에 복사.
 ```
 > 💡 nginx는 `/usr/share/nginx/html/`을 기본 웹페이지 경로로 사용함.
+> 내 html을 포함한 커스텀 이미지를 만들어 브라우저를 통해 결과를 즉각적으로 확인할 수 있게 이미지를 커스텀 하였고, 한글 깨짐 방지를 위한 UTF-8 메타 태그를 추가함.
 
 2. 커스텀 이미지 빌드 (`docker build`)
 ```bash
@@ -673,7 +684,7 @@ CONTAINER ID   IMAGE         COMMAND                   CREATED         STATUS   
 
 
 
-4. 이미지 층(layer) 확인 (`docker history`)
+5. 이미지 층(layer) 확인 (`docker history`)
 ```bash
 /mynginx$ docker history mynginx:1.0 #
 IMAGE          CREATED       CREATED BY                                       SIZE      COMMENT
@@ -877,6 +888,33 @@ origin  https://github.com/a9********el/Codyssey.git (push)
 
 ### 3. 웹페이지 한글 깨짐 현상
 - **문제** : 브라우저에서 한글이 깨져 보임.
-- **원인** : ① index.html 인코딩 문제 ② 브라우저 캐시 문제
+- **원인** : 1. index.html 인코딩 문제? 2. 브라우저 이전 응답 캐시?
 - **확인** : 파일은 UTF-8로 저장됨 → 재빌드 후에도 깨짐 지속.
 - **해결** : 브라우저 **강력 새로고침(Ctrl+Shift+R)**으로 캐시 삭제 → 정상 출력.
+
+
+## 📖 개념 정리 (미션 목표 자가 설명)
+
+### 1. 절대 경로 vs 상대 경로
+- **절대 경로**: 최상위(root)부터의 전체 경로. 현재 위치와 무관하게 항상 같은 곳을 가리킴.
+  - 예: `/c/Codyssey-Campus/codyssey/README.md`
+- **상대 경로**: 현재 위치를 기준으로 한 경로.
+  - 예: 현재 위치가 `codyssey`일 때 `./README.md`, 상위 이동은 `../`
+
+### 2. 파일 권한(r/w/x)과 숫자 표기
+- `r(읽기)=4`, `w(쓰기)=2`, `x(실행)=1`, 세 자리는 `소유자/그룹/기타` 순서.
+- `644` = `rw-r--r--` : 소유자 읽기·쓰기, 그룹·기타는 읽기만 → 일반 문서 파일 기본값
+- `755` = `rwxr-xr-x` : 소유자 전체 권한, 나머지는 읽기·실행 → 디렉토리/실행 파일 기본값
+
+### 3. 포트 매핑이 필요한 이유
+- 컨테이너는 호스트와 **격리된 네트워크**를 가져, 외부에서 바로 접근할 수 없음.
+- `-p 8080:80`은 호스트 8080 요청을 컨테이너 80으로 **전달(연결)**해 브라우저 접속을 가능하게 함.
+
+### 4. Docker 볼륨(영속 데이터)
+- 컨테이너는 삭제되면 내부 데이터도 사라짐(휘발성).
+- 볼륨은 데이터를 **컨테이너 외부(Docker 관리 영역)**에 저장해, 컨테이너를 삭제·재생성해도 데이터가 유지됨.
+- (본 실습에서 `volume-test` 삭제 후 재생성해도 `testfile`이 남아있음으로 검증)
+
+### 5. Git vs GitHub
+- **Git**: 내 컴퓨터(로컬)에서 변경 이력을 관리하는 **버전 관리 도구**.
+- **GitHub**: Git 저장소를 온라인에 올려 공유·협업하는 **원격 호스팅 플랫폼**.
