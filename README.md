@@ -92,12 +92,15 @@
 ### 터미널 조작
 > 🖥️ 수행 환경: Git Bash (Windows, VS Code 내장)
 <details>
-<summary>1. 현재 위치 확인 (`pwd`)</summary>
+<summary> 검증 내용  </summary>
+
+1. 현재 위치 확인 (`pwd`)
+
 ```bash
 $ pwd
 /c/Codyssey-Campus/codyssey
 ```
-</details>
+
 
 2. 목록 확인 숨김 파일 포함 (`ls -a`)
 ```bash
@@ -177,11 +180,17 @@ $ rm -r TEST TEST.txt # -r은 디렉토리를 삭제하기 위한 명령어. 파
 $ ls -a
 ./  ../  .git/  Hello.txt  practice/  README.md
 ```
+</details>
+
+
 
 ### 파일 권한
 > 🐧 수행 환경: WSL/Linux
 > 💡 Git Bash(Windows)에서는 chmod가 실제 파일시스템에 정확히 반영되지 않아,
 > 권한 실습은 WSL 환경에서 수행했습니다. (→ 트러블슈팅 참고) [🖱️참고](#1-git-bash에서-chmod가-반영되지-않음)
+
+<details>
+<summary> 검증 내용  </summary>
 
 1. 권한 확인 (`ls -l`)
 ```bash
@@ -241,7 +250,11 @@ drwx------ 2 xoalsrla226230 xoalsrla226230 4096 Nov  3 14:05 권한연습-하위
 -rw-r--r-- 1 xoalsrla226230 xoalsrla226230    0 Nov  3 14:05 권한연습.txt
 ```
 
+</details>
+
 ### Docker 설치 및 기본점검
+<details>
+<summary> 검증 내용  </summary>
 
 1. Docker 버전 확인 (`docker --version`)
 ```bash
@@ -313,8 +326,11 @@ Server: # 실제 컨테이너를 돌리는 daemon의 정보
   EnableUserlandProxy: true
   UserlandProxyPath: /usr/bin/docker-proxy
 ```
+</details>
 
 ### Docker 기본 운영 명령 수행
+<details>
+<summary> 검증 내용  </summary>
 
 1. hello-world 컨테이너 실행 (`docker run hello-world`)
 ```bash
@@ -414,9 +430,11 @@ CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT     MEM %     NET I
 636354721ff5   naughty_hoover    0.00%     1.125MiB / 15.25GiB   0.01%     1.05kB / 126B   0B / 0B     1
 835f8e82e7a4   focused_lumiere   0.00%     948KiB / 15.25GiB     0.01%     1.46kB / 126B   0B / 0B     1
 ```
-
+</details>
 
 ### Ubuntu 컨테이너 실습
+<details>
+<summary> 검증 내용  </summary>
 
 1. Ubuntu 컨테이너 실행 (`docker run -it ubuntu bash`)
 ```bash
@@ -526,8 +544,11 @@ CONTAINER ID   IMAGE     COMMAND       CREATED             STATUS               
 > exec   : 컨테이너 안에서 "새 프로세스"를 실행. exit해도 컨테이너는 계속 실행됨.
 > 실행 중인 컨테이너에 들어갈 땐 `docker exec -it`를 사용 하는 것이 안전할 듯함.
 > ps. attach 중 Ctrl+P → Ctrl+Q 를 누르면, 컨테이너를 끄지 않고 빠져나올 수 있음(detach).
+</details>
 
 ### 컨테이너 관리 (중지 / 재시작 / 삭제)
+<details>
+<summary> 검증 내용  </summary>
 
 1. 컨테이너 중지(`docker stop`)
 ```bash 
@@ -615,8 +636,11 @@ $ docker images # 헬로월드 이미지 삭제 확인
 IMAGE           ID             DISK USAGE   CONTENT SIZE   EXTRA
 ubuntu:latest   6a06111c3b0a        163MB         45.9MB    U   
 ```
+</details>
 
 ### Dockerfile / 커스텀 이미지
+<details>
+<summary> 검증 내용  </summary>
 
 1. Dockerfile 작성
 > 앞으로 진행할 이미지 만들기 → 웹페이지 띄우기 → 브라우저 접속 → 데이터 유지(볼륨, 바인드)가 매끄럽게 이어지며 학습하는 데 nginx가 유리하다고 생각되어 선택함.
@@ -710,8 +734,12 @@ IMAGE          CREATED       CREATED BY                                       SI
 ```
 > missing은 에러가 아니라 공식 nginx이미지를 받아올 때 ID정보가 없어서 표시되는 것.
 > 맨 위의 한 줄이 내가 만든 부분. Dockerfile을 작성한 내용이 들어있다.
+</details>
+
 
 ### 볼륨 / 바인드 마운트
+<details>
+<summary> 검증 내용  </summary>
 
 1. 볼륨 생성 및 확인
 ```bash
@@ -776,9 +804,12 @@ $ docker run -d --name bind-test -p 8081:80 -v $(pwd):/usr/share/nginx/html ngin
 ![수정 후](./images/바인드마운트%20호스트%20변경%20후.jpg)
 
 > 새로고침 즉시 반영
+</details>
 
 
 ### Git / GitHub
+<details>
+<summary> 검증 내용  </summary>
 
 1. Git 설치 확인
 ```bash
@@ -870,7 +901,7 @@ origin  https://github.com/a9********el/Codyssey.git (push)
 
 ![VSCode,GitHub연동](./images/연동.jpg)
 >연동 화면
-
+</details>
 
 
 ## 🧩 트러블슈팅
