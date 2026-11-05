@@ -612,6 +612,156 @@ ubuntu:latest   6a06111c3b0a        163MB         45.9MB    U
 ### Dockerfile / 커스텀 이미지
 
 1. Dockerfile 작성
+```bash
+$ mkdir mynginx # mynginx 폴더 생성
+$ cd mynginx
+/mynginx$ touch index.html Dockerfile # 웹페이지 파일과 Dockerfile 생성
+/mynginx$ ls 
+Dockerfile  index.html
+```
+
+`index.html` — 웹에 띄울 내용 작성
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"> <!-- 한글 깨짐 방지를 위한 UTF-8 인코딩 트러블슈팅 참고 -->
+    <title>나의 첫 NGINX</title>
+</head>
+<body>
+    <h1>Hello Docker NGINX!</h1>
+    <p>내가 만든 커스텀 이미지에서 나오는 페이지예요.</p>
+</body>
+</html>
+```
+
+`Dockerfile` - 이미지 설계도 작성
+```Dockerfile
+FROM nginx:latest 
+# nginx 공식 이미지를 베이스로 사용.
+COPY index.html /usr/share/nginx/html/index.html 
+# 내가 만든 index.html을 nginx 기본 경로에 복사.
+```
+> 💡 nginx는 `/usr/share/nginx/html/`을 기본 웹페이지 경로로 사용함.
+
+2. 커스텀 이미지 빌드 (`docker build`)
+```bash
+/mynginx$ docker build -t mynginx:1.0 . # -t:이미지 이름(태그) 지정, . 은 현재 폴더의 Dockerfile 사용
+[+] Building 14.8s (7/7) FINISHED
+```
+```bash
+/mynginx$ docker images mynginx # mynginx 이름의 이미지 상태 확인
+IMAGE         ID             DISK USAGE   CONTENT SIZE   EXTRA
+mynginx:1.0   ad6f4a74ea94        241MB         63.9MB        
+```
+
+3. 컨테이너 + 포트 매핑 실행 (`docker run`, `-p 8080:80`)
+```bash
+$ docker run -d -p 8080:80 --name web mynginx:1.0
+9182e05b90d912e5935f83a13902175577b7b304fa0cf11b7c392345a3d87d70
+```
+> `-p`포트설정, 8080은 내가 접속할 포트, 80은 nginx가 쓰는 고정포트. 콜론(:)으로 나뉨.
+
+```bash
+ docker ps
+CONTAINER ID   IMAGE         COMMAND                   CREATED         STATUS         PORTS                                     NAMES
+9182e05b90d9   mynginx:1.0   "/docker-entrypoint.…"   5 minutes ago   Up 5 minutes   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   web
+```
+
+4. 웹페이지 확인
+![웹페이지 확인](./images/Dockerfile%20작성,%20포트매핑.jpg)
+> 브라우저에서 `localhost:8080` 접속
+
+
+
+4. 이미지 층(layer) 확인 (`docker history`)
+```bash
+/mynginx$ docker history mynginx:1.0 #
+IMAGE          CREATED       CREATED BY                                       SIZE      COMMENT
+428eb5a0ff8b   3 hours ago   COPY index.html /usr/share/nginx/html/index.…   24.6kB    buildkit.dockerfile.v0
+<missing>      8 days ago    CMD ["nginx" "-g" "daemon off;"]                 0B        buildkit.dockerfile.v0
+<missing>      8 days ago    STOPSIGNAL SIGQUIT                               0B        buildkit.dockerfile.v0
+<missing>      8 days ago    EXPOSE map[80/tcp:{}]                            0B        buildkit.dockerfile.v0
+<missing>      8 days ago    ENTRYPOINT ["/docker-entrypoint.sh"]             0B        buildkit.dockerfile.v0
+<missing>      8 days ago    COPY 30-tune-worker-processes.sh /docker-ent…   16.4kB    buildkit.dockerfile.v0
+<missing>      8 days ago    COPY 20-envsubst-on-templates.sh /docker-ent…   12.3kB    buildkit.dockerfile.v0
+<missing>      8 days ago    COPY 15-local-resolvers.envsh /docker-entryp…   12.3kB    buildkit.dockerfile.v0
+<missing>      8 days ago    COPY 10-listen-on-ipv6-by-default.sh /docker…   12.3kB    buildkit.dockerfile.v0
+<missing>      8 days ago    COPY docker-entrypoint.sh / # buildkit           8.19kB    buildkit.dockerfile.v0
+<missing>      8 days ago    RUN /bin/sh -c set -x     && groupadd --syst…   88.8MB    buildkit.dockerfile.v0
+<missing>      8 days ago    ENV DYNPKG_RELEASE=1~trixie                      0B        buildkit.dockerfile.v0
+<missing>      8 days ago    ENV PKG_RELEASE=1~trixie                         0B        buildkit.dockerfile.v0
+<missing>      8 days ago    ENV ACME_VERSION=0.4.1                           0B        buildkit.dockerfile.v0
+<missing>      8 days ago    ENV NJS_RELEASE=1~trixie                         0B        buildkit.dockerfile.v0
+<missing>      8 days ago    ENV NJS_VERSION=1.0.2                            0B        buildkit.dockerfile.v0
+<missing>      8 days ago    ENV NGINX_VERSION=1.31.8                         0B        buildkit.dockerfile.v0
+<missing>      8 days ago    LABEL maintainer=NGINX Docker Maintainers <d…   0B        buildkit.dockerfile.v0
+<missing>      9 days ago    # debian.sh --arch 'amd64' out/ 'trixie' '@1…   87.7MB    debuerreotype 0.17
+```
+> missing은 에러가 아니라 공식 nginx이미지를 받아올 때 ID정보가 없어서 표시되는 것.
+> 맨 위의 한 줄이 내가 만든 부분. Dockerfile을 작성한 내용이 들어있다.
+
+### 볼륨 / 바인드 마운트
+
+1. 볼륨 생성 및 확인
+```bash
+/mynginx$ docker volume create myvolume # myvolume 이름의 볼륨 생성.
+myvolume
+/mynginx$ docker volume ls # myvolume 생성 확인
+DRIVER    VOLUME NAME
+local     myvolume
+```
+
+2. 볼륨 연결 및 컨테이너 실행
+```bash
+/mynginx$ docker run -d --name volume-test -v myvolume:/data nginx
+```
+> `-d`백그라운드, `--name`이름지정, `-v`연결 myvolume과 컨테이너의 /data폴더를 연결한 `nginx`기반 컨테이너 실행
+
+3. 볼륨 데이터 영속성 테스트
+```bash
+/mynginx$ docker exec -it volume-test bash # 컨테이너 실행
+/# cd data # 볼륨과 연결된 컨테이너 data 폴더로 이동
+/data# touch testfile # testfile 생성
+/data# exit
+```
+```bash
+/mynginx$ docker ps -a # volume-test 컨테이너 확인
+CONTAINER ID   IMAGE         COMMAND                   CREATED          STATUS                    PORTS                                     NAMES
+5c49191b4cb6   nginx         "/docker-entrypoint.…"   7 minutes ago    Up 7 minutes              80/tcp                                    volume-test
+d682884b6160   mynginx:1.0   "/docker-entrypoint.…"   20 minutes ago   Up 20 minutes             0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   web
+7862d5b07eba   ubuntu        "bash"                    41 hours ago     Exited (0) 41 hours ago                                             trusting_torvalds
+```
+```bash
+/mynginx$ docker rm -f volume-test # volume-test 컨테이너 삭제
+volume-test
+/mynginx$ docker ps -a # 삭제 확인
+CONTAINER ID   IMAGE         COMMAND                   CREATED          STATUS                    PORTS                                     NAMES
+d682884b6160   mynginx:1.0   "/docker-entrypoint.…"   27 minutes ago   Up 27 minutes             0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   web
+7862d5b07eba   ubuntu        "bash"                    41 hours ago     Exited (0) 41 hours ago                                             trusting_torvalds
+```
+```bash
+/mynginx$ docker run -d --name volume-test -v myvolume:/data nginx # 볼륨과 연결한 컨테이너 재생성
+e92a4192bf014efca8a0611ca243258882ecc68797a51de818ab6babf94290c1
+mynginx$ docker exec -it volume-test bash # 컨테이너 실행
+/# cd data
+/data# ls # 컨테이너를 삭제했어도 testfile이 유지됨을 확인
+testfile
+```
+
+4. 바인드 마운트
+```bash
+$ docker run -d --name bind-test -p 8081:80 -v $(pwd):/usr/share/nginx/html nginx
+373a49e5e467e0a78ea804d8be92e041fe7de743c625ca177aec9eb192bd4f09
+```
+> 8080은 Dockerfile생성 실습으로 사용 중. 8081 지정, `$(pwd)`는 현재 경로, 즉 현재 경로와 nginx 기본 웹경로를 연결.
+> 볼륨과는 다르게 현재 경로의 index.html을 수정하면 재빌드 없이 바로 브라우저에 반영됨.
+
+5. 바인드 마운트 호스트 index.html 수정 전/후
+![수정 전](./images/바인드마운트%20호스트%20변경%20전.jpg)
+> index.html에  `<h2>바인드 마운트 실습 성공! ⚡</h2>` 한 줄 추가.
+![수정 후](./images/바인드마운트%20호스트%20변경%20후.jpg)
+> 새로고침 즉시 반영
 
 
 
@@ -625,12 +775,18 @@ ubuntu:latest   6a06111c3b0a        163MB         45.9MB    U
 ## 🧩 트러블슈팅
 ### 1. Git Bash에서 chmod가 반영되지 않음
 - **문제**: Git Bash(Windows)에서 `chmod 744`를 실행해도 `ls -l` 권한 표기가 바뀌지 않음
-- **원인 가설**: Windows 파일시스템(NTFS)은 리눅스식 rwx 권한 모델을 그대로 지원하지 않음
+- **원인**: Windows 파일시스템(NTFS)은 리눅스식 rwx 권한 모델을 그대로 지원하지 않음
 - **확인**: 동일 명령을 WSL/Linux 환경에서 실행 → 권한이 정상 반영됨
 - **해결/대안**: 권한 실습은 WSL 환경에서 수행하기로 결정
 
 ### 2. Docker에서 Image를 삭제하려고 했으나 오류 발생
 - **문제**: Docker에서 `docker rmi ID`를 실행해도 삭제되지 않음.
-- **원인 가설**: 해당 Image로 실행했던 컨테이너가 남아있어서 명령을 수행하지 못함
+- **원인**: 해당 Image로 실행했던 컨테이너가 남아있어서 명령을 수행하지 못함
 - **확인**: 컨테이너를 목록을 확인, 삭제를 원하는 이미지의 컨테이너를 삭제 후 다시 Image삭제 시도
 - **해결/대안**: *rm ↔ rmi*을 짝을 지어 학습. 컨테이너의 큰 틀을 담당하는 이미지는 만들어진 컨테이너가 있으면 삭제가 되지 않음을 학습.
+
+### 3. 웹페이지 한글 깨짐 현상
+- **문제** : 브라우저에서 한글이 깨져 보임.
+- **원인** : ① index.html 인코딩 문제 ② 브라우저 캐시 문제
+- **확인** : 파일은 UTF-8로 저장됨 → 재빌드 후에도 깨짐 지속.
+- **해결** : 브라우저 **강력 새로고침(Ctrl+Shift+R)**으로 캐시 삭제 → 정상 출력.
