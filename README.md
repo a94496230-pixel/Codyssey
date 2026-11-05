@@ -669,6 +669,7 @@ CONTAINER ID   IMAGE         COMMAND                   CREATED         STATUS   
 ```
 
 4. 웹페이지 확인
+
 ![웹페이지 확인](./images/Dockerfile%20작성,%20포트매핑.jpg)
 > 브라우저에서 `localhost:8080` 접속
 
@@ -758,9 +759,13 @@ $ docker run -d --name bind-test -p 8081:80 -v $(pwd):/usr/share/nginx/html ngin
 > 볼륨과는 다르게 현재 경로의 index.html을 수정하면 재빌드 없이 바로 브라우저에 반영됨.
 
 5. 바인드 마운트 호스트 index.html 수정 전/후
+
 ![수정 전](./images/바인드마운트%20호스트%20변경%20전.jpg)
+
 > index.html에  `<h2>바인드 마운트 실습 성공! ⚡</h2>` 한 줄 추가.
+
 ![수정 후](./images/바인드마운트%20호스트%20변경%20후.jpg)
+
 > 새로고침 즉시 반영
 
 
