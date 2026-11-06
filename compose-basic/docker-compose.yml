@@ -1,0 +1,12 @@
+services:
+  web:                          # 서비스 이름 (= --name web 역할)
+    image: nginx       # 사용할 이미지 (= mynginx:1.0 자리)
+    ports:
+      - "${WEB_PORT}:80"               # 포트 매핑 (= -p 8080:80)
+    volumes:
+      - ./index.html:/usr/share/nginx/html/index.html
+                                # 바인드 마운트 (= -v $(pwd):...)
+  cache:
+    image: redis
+    ports:
+      - "${CACHE_PORT}:6379"
