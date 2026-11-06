@@ -32,6 +32,31 @@
 
 ---
 
+## 📂 프로젝트 구조
+
+```text
+Codyssey/
+├── README.md              # 미션 수행 기술 문서 (전체 기록)
+├── Hello.txt              # 터미널 실습용 테스트 파일
+├── compose-basic          # compose 선택 미션 실습 공간
+├── docker-practice        # docker 명령어 실습 공간
+├── mynginx/               # 커스텀 NGINX 이미지 소스
+│   ├── Dockerfile         #   이미지 설계도
+│   └── index.html         #   컨테이너에 띄울 웹 페이지
+├── images/                # README 첨부용 스크린샷 모음
+├── practice/              # 터미널 명령어 실습 공간
+└── 권한연습/              # 파일 권한(chmod) 실습 전용 디렉토리
+```
+
+> **설계 기준**: 실습 목적별로 폴더를 분리했습니다.
+> - `mynginx/`는 **빌드 소스**(Dockerfile + 콘텐츠)만 모아 재현성을 높였고,
+> - `images/`는 **증거 자료**를 코드와 분리해 문서 가독성을 확보했으며,
+> - `권한연습/`·`practice/`는 **실습 성격별로 격리**해 루트가 지저분해지지 않도록함.
+
+---
+
+
+
 ## ✅ 수행 항목 체크리스트
 
 ### 1. 터미널 조작 [🖱️검증 및 결과](#1-터미널-조작)
@@ -950,8 +975,9 @@ origin  https://github.com/a9********el/Codyssey.git (push)
 - **확인** : 파일은 UTF-8로 저장됨 → 재빌드 후에도 깨짐 지속.
 - **해결** : 브라우저 **강력 새로고침(Ctrl+Shift+R)**으로 캐시 삭제 → 정상 출력.
 
+---
 
-## 📖 개념 정리 (미션 목표 자가 설명)
+## 📖 개념 정리 
 
 ### 1. 절대 경로 vs 상대 경로
 - **절대 경로**: 최상위(root)부터의 전체 경로. 현재 위치와 무관하게 항상 같은 곳을 가리킴.
@@ -976,6 +1002,52 @@ origin  https://github.com/a9********el/Codyssey.git (push)
 ### 5. Git vs GitHub
 - **Git**: 내 컴퓨터(로컬)에서 변경 이력을 관리하는 **버전 관리 도구**.
 - **GitHub**: Git 저장소를 온라인에 올려 공유·협업하는 **원격 호스팅 플랫폼**.
+
+### 6. 포트 충돌 예방 및 진단 절차 (보완)
+
+> 본 실습 중 동일 포트를 사용해도 되는 건지 neito에 질문 후 충돌을 예상하여 확인 후 진행하였음.
+> 8080은 이미 사용 중 이기 때문에 바인드마운트를 8081로 진행하였음.
+> 그에 따라 충돌되었던 실습은 없으나, 포트 충돌 진단 순서를 아래 기술함.
+
+- 포트 사용 여부 확인
+
+```bash
+$ sudo ss -tlnp | grep 8080
+[sudo: authenticate] Password:          
+LISTEN 0      4096         0.0.0.0:8080       0.0.0.0:*    users:(("docker-proxy",pid=4208,fd=8))  
+LISTEN 0      4096            [::]:8080          [::]:*    users:(("docker-proxy",pid=4215,fd=8))  
+```
+```bash
+$ sudo lsof -i :8080  
+COMMAND    PID USER FD   TYPE DEVICE SIZE/OFF NODE NAME
+docker-pr 4208 root 8u  IPv4  63376      0t0  TCP *:http-alt (LISTEN)
+docker-pr 4215 root 8u  IPv6  63377      0t0  TCP *:http-alt (LISTEN)
+```
+
+> `LISTEN` 상태 → **8080 포트가 이미 사용 중**임을 확인.
+> 점유 프로세스가 **`docker-proxy`(PID 4208/4215)**, 즉 **이미 실행 중인 Docker 컨테이너**임을 확인했습니다.
+> 따라서 바인드 마운트 실습(8번)에서는 충돌을 피해 **8081로 분리**하여 매핑했습니다.
+> ※ 본 환경에서는 `netstat`이 기본 미설치 상태였습니다.
+> 최신 리눅스에서는 `netstat`을 대체하는 **`ss` 명령이 표준으로 권장**되므로,
+> 별도 설치 없이 `ss`와 `lsof` 교차 검증을 수행했습니다.
+
+- 포트 해제 절차
+> 실습 이후 보완, 사용 및 검증 예시를 작성
+```bash
+# 점유자가 Docker인 경우 (이번 케이스) — kill이 아닌 컨테이너 중지가 올바름
+$ docker ps --filter "publish=8080"   # 어떤 컨테이너가 점유 중인지 확인
+$ docker stop <컨테이너ID>             # 해당 컨테이너 중지
+
+# 점유자가 일반 프로세스인 경우
+$ kill <PID>                          # 정상 종료 (PID는 ②에서 확인한 값)
+$ kill -9 <PID>                       # 종료되지 않을 경우 강제 종료
+```
+
+- 대안 : 호스트의 포트를 변경
+```bash
+$ docker run -d -p 8081:80 --name web mynginx:1.0
+```
+
 
 ---
 
