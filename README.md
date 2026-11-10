@@ -38,8 +38,8 @@
 Codyssey/
 ├── README.md              # 미션 수행 기술 문서 (전체 기록)
 ├── Hello.txt              # 터미널 실습용 테스트 파일
-├── compose-basic          # compose 선택 미션 실습 공간
-├── docker-practice        # docker 명령어 실습 공간
+├── compose-basic/         # compose 선택 미션 실습 공간
+├── docker-practice/       # docker 명령어 실습 공간
 ├── mynginx/               # 커스텀 NGINX 이미지 소스
 │   ├── Dockerfile         #   이미지 설계도
 │   └── index.html         #   컨테이너에 띄울 웹 페이지
